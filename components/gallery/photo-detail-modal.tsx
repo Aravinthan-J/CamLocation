@@ -9,12 +9,12 @@ import {
   Alert,
   Share,
   Dimensions,
-} from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { PhotoMetadata } from '@/types/photo';
-import { LocationBadge } from './location-badge';
+} from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { PhotoMetadata } from "@/types/photo";
+import { LocationBadge } from "./location-badge";
 
-const { width, height } = Dimensions.get('window');
+const { width, height } = Dimensions.get("window");
 
 interface PhotoDetailModalProps {
   visible: boolean;
@@ -34,26 +34,27 @@ export function PhotoDetailModal({
   const handleShare = async () => {
     try {
       await Share.share({
-        message: photo.location?.address?.formattedAddress || 'Check out this photo!',
+        message:
+          photo.location?.address?.fullAddress || "Check out this photo!",
         url: photo.uri,
       });
     } catch (error) {
-      console.error('Error sharing:', error);
+      console.error("Error sharing:", error);
     }
   };
 
   const handleDelete = () => {
-    Alert.alert('Delete Photo', 'Are you sure you want to delete this photo?', [
-      { text: 'Cancel', style: 'cancel' },
+    Alert.alert("Delete Photo", "Are you sure you want to delete this photo?", [
+      { text: "Cancel", style: "cancel" },
       {
-        text: 'Delete',
-        style: 'destructive',
+        text: "Delete",
+        style: "destructive",
         onPress: async () => {
           try {
             await onDelete(photo.id);
             onClose();
           } catch (error) {
-            Alert.alert('Error', 'Failed to delete photo');
+            Alert.alert("Error", "Failed to delete photo");
           }
         },
       },
@@ -76,7 +77,10 @@ export function PhotoDetailModal({
             <TouchableOpacity onPress={handleShare} style={styles.headerButton}>
               <Ionicons name="share-outline" size={24} color="#fff" />
             </TouchableOpacity>
-            <TouchableOpacity onPress={handleDelete} style={styles.headerButton}>
+            <TouchableOpacity
+              onPress={handleDelete}
+              style={styles.headerButton}
+            >
               <Ionicons name="trash-outline" size={24} color="#fff" />
             </TouchableOpacity>
           </View>
@@ -84,17 +88,25 @@ export function PhotoDetailModal({
 
         {/* Photo */}
         <View style={styles.imageContainer}>
-          <Image source={{ uri: photo.uri }} style={styles.image} resizeMode="contain" />
+          <Image
+            source={{ uri: photo.uri }}
+            style={styles.image}
+            resizeMode="contain"
+          />
         </View>
 
         {/* Details */}
         <ScrollView style={styles.details}>
           <Text style={styles.sectionTitle}>Details</Text>
-          <Text style={styles.detailText}>Captured: {formatDate(photo.timestamp)}</Text>
+          <Text style={styles.detailText}>
+            Captured: {formatDate(photo.timestamp)}
+          </Text>
 
           {photo.location && (
             <>
-              <Text style={[styles.sectionTitle, styles.sectionSpacing]}>Location</Text>
+              <Text style={[styles.sectionTitle, styles.sectionSpacing]}>
+                Location
+              </Text>
               <LocationBadge location={photo.location} />
             </>
           )}
@@ -107,49 +119,49 @@ export function PhotoDetailModal({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#000',
+    backgroundColor: "#000",
   },
   header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     paddingHorizontal: 16,
     paddingTop: 60,
     paddingBottom: 16,
-    backgroundColor: 'rgba(0, 0, 0, 0.9)',
+    backgroundColor: "rgba(0, 0, 0, 0.9)",
   },
   headerButton: {
     width: 44,
     height: 44,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   headerActions: {
-    flexDirection: 'row',
+    flexDirection: "row",
     gap: 8,
   },
   imageContainer: {
     width,
     height: height * 0.5,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#000',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#000",
   },
   image: {
-    width: '100%',
-    height: '100%',
+    width: "100%",
+    height: "100%",
   },
   details: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     padding: 20,
   },
   sectionTitle: {
     fontSize: 18,
-    fontWeight: '700',
-    color: '#333',
+    fontWeight: "700",
+    color: "#333",
     marginBottom: 12,
   },
   sectionSpacing: {
@@ -157,7 +169,7 @@ const styles = StyleSheet.create({
   },
   detailText: {
     fontSize: 14,
-    color: '#666',
+    color: "#666",
     marginBottom: 8,
   },
 });

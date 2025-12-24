@@ -1,15 +1,17 @@
-import { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { PhotoMetadata } from '@/types/photo';
-import { usePhotos } from '@/hooks/use-photos';
-import { PhotoGrid } from '@/components/gallery/photo-grid';
-import { PhotoDetailModal } from '@/components/gallery/photo-detail-modal';
-import { LoadingSpinner } from '@/components/shared/loading-spinner';
-import { ErrorMessage } from '@/components/shared/error-message';
+import { useState } from "react";
+import { View, StyleSheet } from "react-native";
+import { PhotoMetadata } from "@/types/photo";
+import { usePhotos } from "@/hooks/use-photos";
+import { PhotoGrid } from "@/components/gallery/photo-grid";
+import { PhotoDetailModal } from "@/components/gallery/photo-detail-modal";
+import { LoadingSpinner } from "@/components/shared/loading-spinner";
+import { ErrorMessage } from "@/components/shared/error-message";
 
 export default function GalleryScreen() {
   const { photos, loading, error, deletePhotoById, refresh } = usePhotos();
-  const [selectedPhoto, setSelectedPhoto] = useState<PhotoMetadata | null>(null);
+  const [selectedPhoto, setSelectedPhoto] = useState<PhotoMetadata | null>(
+    null
+  );
   const [modalVisible, setModalVisible] = useState(false);
 
   const handlePhotoPress = (photo: PhotoMetadata) => {
@@ -56,6 +58,6 @@ export default function GalleryScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
   },
 });

@@ -39,6 +39,27 @@
             "backgroundColor": "#000000"
           }
         }
+      ],
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow CamLocation to access your camera to take photos with location data."
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow CamLocation to use your location to add GPS data to photos.",
+          "locationWhenInUsePermission": "Allow CamLocation to use your location to add GPS data to photos."
+        }
+      ],
+      [
+        "expo-media-library",
+        {
+          "photosPermission": "Allow CamLocation to save photos to your camera roll.",
+          "savePhotosPermission": "Allow CamLocation to save photos to your camera roll.",
+          "isAccessMediaLocationEnabled": true
+        }
       ]
     ],
     "experiments": {

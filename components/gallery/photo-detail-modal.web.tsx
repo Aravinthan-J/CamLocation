@@ -9,7 +9,6 @@ import {
   Alert,
   Dimensions,
 } from "react-native";
-import * as Sharing from "expo-sharing";
 import { Ionicons } from "@expo/vector-icons";
 import { PhotoMetadata } from "@/types/photo";
 import { LocationBadge } from "./location-badge";
@@ -33,20 +32,21 @@ export function PhotoDetailModal({
 
   const handleShare = async () => {
     try {
-      const isAvailable = await Sharing.isAvailableAsync();
-      if (!isAvailable) {
-        Alert.alert("Error", "Sharing is not available on this device");
-        return;
+      // Web Share API
+      if (navigator.share) {
+        await navigator.share({
+          title: "Photo with Location",
+          text: photo.location?.address?.fullAddress || "Check out this photo!",
+          url: photo.uri,
+        });
+      } else {
+        Alert.alert(
+          "Sharing",
+          "Web sharing is not supported in this browser. You can download the image instead."
+        );
       }
-
-      await Sharing.shareAsync(photo.uri, {
-        mimeType: "image/jpeg",
-        dialogTitle: "Share Photo with Location",
-        UTI: "public.jpeg",
-      });
     } catch (error) {
       console.error("Error sharing:", error);
-      Alert.alert("Error", "Failed to share photo");
     }
   };
 

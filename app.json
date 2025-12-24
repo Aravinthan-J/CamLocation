@@ -58,7 +58,10 @@
         {
           "photosPermission": "Allow CamLocation to save photos to your camera roll.",
           "savePhotosPermission": "Allow CamLocation to save photos to your camera roll.",
-          "isAccessMediaLocationEnabled": true
+          "isAccessMediaLocationEnabled": true,
+          "android": {
+            "permissions": ["READ_MEDIA_IMAGES", "WRITE_EXTERNAL_STORAGE"]
+          }
         }
       ]
     ],

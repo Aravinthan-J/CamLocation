@@ -1,6 +1,5 @@
-import * as FileSystem from 'expo-file-system';
-import { documentDirectory } from 'expo-file-system';
-import { PhotoMetadata } from '@/types/photo';
+import * as FileSystem from "expo-file-system";
+import { documentDirectory } from "expo-file-system";
 
 const PHOTOS_DIR = `${documentDirectory}photos/`;
 
@@ -58,7 +57,7 @@ export async function getStorageSize(): Promise<number> {
 
   for (const file of files) {
     const fileInfo = await FileSystem.getInfoAsync(`${PHOTOS_DIR}${file}`);
-    if (fileInfo.exists && 'size' in fileInfo) {
+    if (fileInfo.exists && "size" in fileInfo) {
       totalSize += fileInfo.size;
     }
   }

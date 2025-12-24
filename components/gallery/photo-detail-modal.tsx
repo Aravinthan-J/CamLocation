@@ -98,26 +98,9 @@ export function PhotoDetailModal({
           <Image
             source={{ uri: photo.uri }}
             style={styles.image}
-            resizeMode="contain"
+            resizeMode="cover"
           />
         </View>
-
-        {/* Details */}
-        {/* <ScrollView style={styles.details}>
-          <Text style={styles.sectionTitle}>Details</Text>
-          <Text style={styles.detailText}>
-            Captured: {formatDate(photo.timestamp)}
-          </Text>
-
-          {photo.location && (
-            <>
-              <Text style={[styles.sectionTitle, styles.sectionSpacing]}>
-                Location
-              </Text>
-              <LocationBadge location={photo.location} />
-            </>
-          )}
-        </ScrollView> */}
       </View>
     </Modal>
   );
@@ -149,34 +132,13 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     width,
-    height: height * 0.5,
+    height: height * 0.7,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#000",
   },
   image: {
     width: "100%",
-    height: "100%",
-  },
-  details: {
-    flex: 1,
-    backgroundColor: "#fff",
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    padding: 20,
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: "700",
-    color: "#333",
-    marginBottom: 12,
-  },
-  sectionSpacing: {
-    marginTop: 20,
-  },
-  detailText: {
-    fontSize: 14,
-    color: "#666",
-    marginBottom: 8,
+    height: height * 0.7,
   },
 });

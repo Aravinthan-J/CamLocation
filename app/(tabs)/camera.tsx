@@ -12,6 +12,7 @@ import {
 import { CameraView, CameraType, FlashMode } from "expo-camera";
 import { useRouter } from "expo-router";
 import * as Haptics from "expo-haptics";
+import { captureRef } from "react-native-view-shot";
 import { useCameraPermissions } from "@/hooks/use-camera-permissions";
 import { useLocationPermissions } from "@/hooks/use-location-permissions";
 import { useCurrentLocation } from "@/hooks/use-current-location";
@@ -24,6 +25,7 @@ import { WatermarkOverlay } from "@/components/camera/watermark-overlay";
 export default function CameraScreen() {
   const router = useRouter();
   const cameraRef = useRef<CameraView>(null);
+  const watermarkViewRef = useRef<View>(null);
 
   const [facing, setFacing] = useState<CameraType>("back");
   const [flashMode, setFlashMode] = useState<FlashMode>("off");
@@ -173,12 +175,31 @@ export default function CameraScreen() {
     try {
       setIsSaving(true);
 
+      console.log("Capturing watermarked image...");
+
+      // Capture the watermarked view as an image
+      let imageUri = capturedPhoto;
+
+      if (location && watermarkViewRef.current) {
+        try {
+          // Capture the view with watermark
+          const capturedUri = await captureRef(watermarkViewRef, {
+            format: "jpg",
+            quality: 0.9,
+          });
+          imageUri = capturedUri;
+          console.log("Watermarked image captured:", capturedUri);
+        } catch (captureError) {
+          console.error("Error capturing watermark:", captureError);
+          // Fall back to original image if watermark capture fails
+          console.log("Falling back to original image without watermark");
+        }
+      }
+
       console.log("Saving photo with location metadata...");
 
-      // Note: Watermark is shown in preview only for now
-      // To burn watermark into image, app needs to be rebuilt with react-native-view-shot
       await captureAndSavePhoto({
-        uri: capturedPhoto,
+        uri: imageUri,
         location: location,
         saveToCameraRollEnabled: true,
       });
@@ -297,7 +318,9 @@ export default function CameraScreen() {
       >
         <View style={styles.previewContainer}>
           {capturedPhoto && location && (
-            <WatermarkOverlay imageUri={capturedPhoto} location={location} />
+            <View ref={watermarkViewRef} collapsable={false}>
+              <WatermarkOverlay imageUri={capturedPhoto} location={location} />
+            </View>
           )}
           {capturedPhoto && !location && (
             <Image

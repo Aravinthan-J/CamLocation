@@ -1,6 +1,5 @@
-import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
-import { LocationData } from '@/types/photo';
-import { formatCoordinates } from '@/utils/geocoding';
+import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
+import { LocationData } from "@/types/photo";
 
 interface LocationIndicatorProps {
   location: LocationData | null;
@@ -8,7 +7,11 @@ interface LocationIndicatorProps {
   error: string | null;
 }
 
-export function LocationIndicator({ location, loading, error }: LocationIndicatorProps) {
+export function LocationIndicator({
+  location,
+  loading,
+  error,
+}: LocationIndicatorProps) {
   if (loading) {
     return (
       <View style={styles.container}>
@@ -33,9 +36,7 @@ export function LocationIndicator({ location, loading, error }: LocationIndicato
   return (
     <View style={styles.container}>
       <Text style={styles.icon}>📍</Text>
-      <Text style={styles.text}>
-        {formatCoordinates(location.latitude, location.longitude)}
-      </Text>
+      <Text style={styles.text}>{location.address?.formattedAddress}</Text>
       {location.accuracy && (
         <Text style={styles.accuracy}>±{Math.round(location.accuracy)}m</Text>
       )}
@@ -45,9 +46,9 @@ export function LocationIndicator({ location, loading, error }: LocationIndicato
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.6)",
     paddingHorizontal: 12,
     paddingVertical: 8,
     borderRadius: 20,
@@ -57,17 +58,17 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   text: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 12,
-    fontWeight: '500',
+    fontWeight: "500",
   },
   accuracy: {
-    color: '#ccc',
+    color: "#ccc",
     fontSize: 10,
   },
   errorText: {
-    color: '#ff6b6b',
+    color: "#ff6b6b",
     fontSize: 12,
-    fontWeight: '500',
+    fontWeight: "500",
   },
 });

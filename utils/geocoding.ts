@@ -1,5 +1,5 @@
-import * as Location from 'expo-location';
-import { AddressData, LocationData } from '@/types/photo';
+import * as Location from "expo-location";
+import { AddressData, LocationData } from "@/types/photo";
 
 // Cache for geocoded addresses to avoid repeated API calls
 const geocodingCache = new Map<string, AddressData>();
@@ -34,6 +34,8 @@ export async function reverseGeocode(
         country: address.country ?? undefined,
         postalCode: address.postalCode ?? undefined,
         formattedAddress: formatAddress(address),
+        district: address.district ?? undefined,
+        fullAddress: address.formattedAddress ?? "",
       };
 
       // Cache the result
@@ -44,7 +46,7 @@ export async function reverseGeocode(
 
     return undefined;
   } catch (error) {
-    console.error('Error reverse geocoding:', error);
+    console.error("Error reverse geocoding:", error);
     return undefined;
   }
 }
@@ -53,17 +55,20 @@ function formatAddress(address: Location.LocationGeocodedAddress): string {
   const parts: string[] = [];
 
   if (address.street) parts.push(address.street);
+  else if (address.district) parts.push(address.district);
   if (address.city) parts.push(address.city);
   if (address.region) parts.push(address.region);
   if (address.country) parts.push(address.country);
 
-  return parts.join(', ') || 'Unknown location';
+  return parts.join(", ") || "Unknown location";
 }
 
 export function formatCoordinates(latitude: number, longitude: number): string {
-  const latDir = latitude >= 0 ? 'N' : 'S';
-  const lonDir = longitude >= 0 ? 'E' : 'W';
-  return `${Math.abs(latitude).toFixed(6)}° ${latDir}, ${Math.abs(longitude).toFixed(6)}° ${lonDir}`;
+  const latDir = latitude >= 0 ? "N" : "S";
+  const lonDir = longitude >= 0 ? "E" : "W";
+  return `${Math.abs(latitude).toFixed(6)}° ${latDir}, ${Math.abs(
+    longitude
+  ).toFixed(6)}° ${lonDir}`;
 }
 
 export function clearGeocodeCache(): void {

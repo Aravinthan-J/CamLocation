@@ -1,9 +1,9 @@
-import * as ImageManipulator from 'expo-image-manipulator';
-import { PhotoMetadata, LocationData } from '@/types/photo';
-import { savePhoto } from '@/storage/photo-storage';
-import { saveMetadata } from '@/storage/metadata-storage';
-import { reverseGeocode } from './geocoding';
-import { saveToCameraRoll, generatePhotoId } from './file-manager';
+import * as ImageManipulator from "expo-image-manipulator";
+import { PhotoMetadata, LocationData } from "@/types/photo";
+import { savePhoto } from "@/storage/photo-storage";
+import { saveMetadata } from "@/storage/metadata-storage";
+import { reverseGeocode } from "./geocoding";
+import { saveToCameraRoll, generatePhotoId } from "./file-manager";
 
 export interface CapturePhotoOptions {
   uri: string;
@@ -44,7 +44,7 @@ export async function captureAndSavePhoto(
       id: photoId,
       uri: savedUri,
       timestamp,
-      location: locationWithAddress,
+      location: locationWithAddress ?? undefined,
     };
 
     // Save metadata
@@ -57,7 +57,7 @@ export async function captureAndSavePhoto(
 
     return metadata;
   } catch (error) {
-    console.error('Error capturing and saving photo:', error);
+    console.error("Error capturing and saving photo:", error);
     throw error;
   }
 }
@@ -76,7 +76,7 @@ async function addExifData(
     // and can be embedded when saving to camera roll using MediaLibrary
     return uri;
   } catch (error) {
-    console.error('Error adding EXIF data:', error);
+    console.error("Error adding EXIF data:", error);
     return uri;
   }
 }

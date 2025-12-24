@@ -1,10 +1,17 @@
-import * as FileSystem from "expo-file-system";
-import { documentDirectory } from "expo-file-system";
+// utils/photo-storage.ts
+import * as FileSystem from "expo-file-system/legacy";
 
-const PHOTOS_DIR = `${documentDirectory}photos/`;
+// Get the photos directory path
+const getPhotosDir = (): string => {
+  if (!FileSystem.documentDirectory) {
+    throw new Error("FileSystem.documentDirectory is not available");
+  }
+  return `${FileSystem.documentDirectory}photos/`;
+};
 
 // Ensure photos directory exists
 export async function ensurePhotosDirectory(): Promise<void> {
+  const PHOTOS_DIR = getPhotosDir();
   const dirInfo = await FileSystem.getInfoAsync(PHOTOS_DIR);
   if (!dirInfo.exists) {
     await FileSystem.makeDirectoryAsync(PHOTOS_DIR, { intermediates: true });
@@ -17,6 +24,7 @@ export async function savePhoto(
   photoId: string
 ): Promise<string> {
   await ensurePhotosDirectory();
+  const PHOTOS_DIR = getPhotosDir();
   const fileName = `photo_${photoId}.jpg`;
   const destUri = `${PHOTOS_DIR}${fileName}`;
   await FileSystem.copyAsync({ from: sourceUri, to: destUri });
@@ -34,6 +42,7 @@ export async function deletePhoto(uri: string): Promise<void> {
 // Get all photo URIs
 export async function getAllPhotoUris(): Promise<string[]> {
   await ensurePhotosDirectory();
+  const PHOTOS_DIR = getPhotosDir();
   const files = await FileSystem.readDirectoryAsync(PHOTOS_DIR);
   return files.map((file) => `${PHOTOS_DIR}${file}`);
 }
@@ -41,6 +50,7 @@ export async function getAllPhotoUris(): Promise<string[]> {
 // Clear all photos
 export async function clearAllPhotos(): Promise<void> {
   await ensurePhotosDirectory();
+  const PHOTOS_DIR = getPhotosDir();
   const files = await FileSystem.readDirectoryAsync(PHOTOS_DIR);
   await Promise.all(
     files.map((file) =>
@@ -52,6 +62,7 @@ export async function clearAllPhotos(): Promise<void> {
 // Get storage size
 export async function getStorageSize(): Promise<number> {
   await ensurePhotosDirectory();
+  const PHOTOS_DIR = getPhotosDir();
   const files = await FileSystem.readDirectoryAsync(PHOTOS_DIR);
   let totalSize = 0;
 

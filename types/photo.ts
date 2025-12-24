@@ -12,16 +12,18 @@ export interface LocationData {
   longitude: number;
   altitude?: number;
   accuracy?: number;
-  address?: AddressData;
+  address?: AddressData | null;
 }
 
 export interface AddressData {
+  district?: string;
   street?: string;
   city?: string;
   region?: string;
   country?: string;
   postalCode?: string;
   formattedAddress: string;
+  fullAddress: string;
 }
 
 export interface ExifData {

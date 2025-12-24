@@ -19,6 +19,7 @@ import { captureAndSavePhoto } from "@/utils/photo-capture";
 import { LocationIndicator } from "@/components/camera/location-indicator";
 import { PermissionPrompt } from "@/components/camera/permission-prompt";
 import { CameraControls } from "@/components/camera/camera-controls";
+import { WatermarkOverlay } from "@/components/camera/watermark-overlay";
 
 export default function CameraScreen() {
   const router = useRouter();
@@ -172,7 +173,10 @@ export default function CameraScreen() {
     try {
       setIsSaving(true);
 
-      console.log("Saving photo with location...");
+      console.log("Saving photo with location metadata...");
+
+      // Note: Watermark is shown in preview only for now
+      // To burn watermark into image, app needs to be rebuilt with react-native-view-shot
       await captureAndSavePhoto({
         uri: capturedPhoto,
         location: location,
@@ -292,7 +296,10 @@ export default function CameraScreen() {
         onRequestClose={handleRetake}
       >
         <View style={styles.previewContainer}>
-          {capturedPhoto && (
+          {capturedPhoto && location && (
+            <WatermarkOverlay imageUri={capturedPhoto} location={location} />
+          )}
+          {capturedPhoto && !location && (
             <Image
               source={{ uri: capturedPhoto }}
               style={styles.previewImage}

@@ -1,9 +1,9 @@
-import * as ImageManipulator from "expo-image-manipulator";
 import { PhotoMetadata, LocationData } from "@/types/photo";
 import { savePhoto } from "@/storage/photo-storage";
 import { saveMetadata } from "@/storage/metadata-storage";
-import { reverseGeocode } from "./geocoding";
+import { reverseGeocode, formatCoordinates } from "./geocoding";
 import { saveToCameraRoll, generatePhotoId } from "./file-manager";
+import * as ImageManipulator from "expo-image-manipulator";
 
 export interface CapturePhotoOptions {
   uri: string;
@@ -21,23 +21,20 @@ export async function captureAndSavePhoto(
   const timestamp = Date.now();
 
   try {
-    // Process image with location data if available
     let processedUri = uri;
-
-    if (location) {
-      // Add EXIF data with location
-      processedUri = await addExifData(uri, location);
-    }
-
-    // Save photo to app storage
-    const savedUri = await savePhoto(processedUri, photoId);
 
     // Get address if location is available
     let locationWithAddress = location;
     if (location) {
       const address = await reverseGeocode(location);
       locationWithAddress = { ...location, address };
+
+      // Add watermark with location information
+      processedUri = await addLocationWatermark(uri, locationWithAddress);
     }
+
+    // Save photo to app storage
+    const savedUri = await savePhoto(processedUri, photoId);
 
     // Create metadata
     const metadata: PhotoMetadata = {
@@ -62,21 +59,27 @@ export async function captureAndSavePhoto(
   }
 }
 
-async function addExifData(
+async function addLocationWatermark(
   uri: string,
   location: LocationData
 ): Promise<string> {
   try {
-    // expo-image-manipulator doesn't directly support EXIF embedding
-    // For now, we'll just return the original URI
-    // In a production app, you might use a library like piexifjs
-    // or handle EXIF on the native side
+    // Note: Expo doesn't have built-in text watermarking
+    // For now, we'll just return the original image
+    // The location info is still saved in metadata and can be viewed in the gallery
 
-    // Note: The location data will still be stored in metadata
-    // and can be embedded when saving to camera roll using MediaLibrary
+    // Future enhancement: Use react-native-view-shot to capture a View
+    // with the image and text overlay rendered using React Native components
+
+    console.log("Watermark info:", {
+      address: location.address?.formattedAddress,
+      coordinates: formatCoordinates(location.latitude, location.longitude),
+      time: new Date().toLocaleString()
+    });
+
     return uri;
   } catch (error) {
-    console.error("Error adding EXIF data:", error);
+    console.error("Error in watermark function:", error);
     return uri;
   }
 }

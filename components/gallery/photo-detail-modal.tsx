@@ -96,7 +96,7 @@ export function PhotoDetailModal({
         </View>
 
         {/* Details */}
-        <ScrollView style={styles.details}>
+        {/* <ScrollView style={styles.details}>
           <Text style={styles.sectionTitle}>Details</Text>
           <Text style={styles.detailText}>
             Captured: {formatDate(photo.timestamp)}
@@ -110,7 +110,7 @@ export function PhotoDetailModal({
               <LocationBadge location={photo.location} />
             </>
           )}
-        </ScrollView>
+        </ScrollView> */}
       </View>
     </Modal>
   );

@@ -98,7 +98,7 @@ export function PhotoDetailModal({
           <Image
             source={{ uri: photo.uri }}
             style={styles.image}
-            resizeMode="cover"
+            resizeMode="contain"
           />
         </View>
       </View>

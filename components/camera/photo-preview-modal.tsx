@@ -196,7 +196,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#000",
-    justifyContent: "space-between",
+    justifyContent: "flex-start",
     alignItems: "center",
     height: "100%",
   },
@@ -211,10 +211,10 @@ const styles = StyleSheet.create({
     height: "auto",
   },
   actions: {
-    // position: "absolute",
-    // bottom: 40,
-    // left: 20,
-    // right: 20,
+    position: "absolute",
+    bottom: 40,
+    left: 20,
+    right: 20,
     height: "auto",
     flexDirection: "row",
     gap: 16,

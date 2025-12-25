@@ -13,7 +13,7 @@ export function WatermarkOverlay({
   imageUri,
   location,
 }: WatermarkOverlayProps) {
-  const address = location.address?.formattedAddress || "Unknown location";
+  const address = location.address?.fullAddress || "Unknown location";
   const coordinates = formatCoordinates(location.latitude, location.longitude);
   const dateTime = new Date().toLocaleString();
 

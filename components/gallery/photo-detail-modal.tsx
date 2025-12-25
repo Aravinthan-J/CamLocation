@@ -4,15 +4,12 @@ import {
   Image,
   StyleSheet,
   TouchableOpacity,
-  ScrollView,
-  Text,
   Alert,
   Dimensions,
 } from "react-native";
 import * as Sharing from "expo-sharing";
 import { Ionicons } from "@expo/vector-icons";
 import { PhotoMetadata } from "@/types/photo";
-import { LocationBadge } from "./location-badge";
 
 const { width, height } = Dimensions.get("window");
 

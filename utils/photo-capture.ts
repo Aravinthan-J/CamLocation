@@ -72,7 +72,7 @@ async function addLocationWatermark(
     // with the image and text overlay rendered using React Native components
 
     console.log("Watermark info:", {
-      address: location.address?.formattedAddress,
+      address: location.address?.fullAddress,
       coordinates: formatCoordinates(location.latitude, location.longitude),
       time: new Date().toLocaleString()
     });

@@ -4,14 +4,11 @@ import {
   Image,
   StyleSheet,
   TouchableOpacity,
-  ScrollView,
-  Text,
   Alert,
   Dimensions,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { PhotoMetadata } from "@/types/photo";
-import { LocationBadge } from "./location-badge";
 
 const { width, height } = Dimensions.get("window");
 
@@ -101,23 +98,6 @@ export function PhotoDetailModal({
             resizeMode="contain"
           />
         </View>
-
-        {/* Details */}
-        {/* <ScrollView style={styles.details}>
-          <Text style={styles.sectionTitle}>Details</Text>
-          <Text style={styles.detailText}>
-            Captured: {formatDate(photo.timestamp)}
-          </Text>
-
-          {photo.location && (
-            <>
-              <Text style={[styles.sectionTitle, styles.sectionSpacing]}>
-                Location
-              </Text>
-              <LocationBadge location={photo.location} />
-            </>
-          )}
-        </ScrollView> */}
       </View>
     </Modal>
   );

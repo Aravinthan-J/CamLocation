@@ -13,13 +13,13 @@ export function useMediaLibraryPermissions() {
   }, []);
 
   const checkPermission = async () => {
-    const { status, canAskAgain } = await MediaLibrary.getPermissionsAsync();
+    const { status, canAskAgain } = await MediaLibrary.getPermissionsAsync(false);
     setStatus(status as PermissionStatus);
     setCanAskAgain(canAskAgain);
   };
 
   const requestPermission = async (): Promise<boolean> => {
-    const { status, canAskAgain } = await MediaLibrary.requestPermissionsAsync();
+    const { status, canAskAgain } = await MediaLibrary.requestPermissionsAsync(false);
     setStatus(status as PermissionStatus);
     setCanAskAgain(canAskAgain);
     return status === 'granted';

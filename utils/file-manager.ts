@@ -3,11 +3,11 @@ import * as MediaLibrary from "expo-media-library";
 
 export async function saveToCameraRoll(uri: string): Promise<string | null> {
   try {
-    const { status } = await MediaLibrary.getPermissionsAsync();
+    const { status } = await MediaLibrary.getPermissionsAsync(false);
 
     if (status !== "granted") {
       const { status: newStatus } =
-        await MediaLibrary.requestPermissionsAsync();
+        await MediaLibrary.requestPermissionsAsync(false);
       if (newStatus !== "granted") {
         console.error("Media library permission not granted");
         return null;

@@ -27,7 +27,6 @@
         "ACCESS_FINE_LOCATION",
         "CAMERA",
         "READ_MEDIA_IMAGES",
-        "READ_MEDIA_VIDEO",
         "ACCESS_MEDIA_LOCATION"
       ]
     },
@@ -68,7 +67,9 @@
         {
           "photosPermission": "Allow CamLocation to save photos to your camera roll.",
           "savePhotosPermission": "Allow CamLocation to save photos to your camera roll.",
-          "isAccessMediaLocationEnabled": true
+          "isAccessMediaLocationEnabled": true,
+          "requestWriteExternalStoragePermission": false,
+          "requestLegacyExternalStorage": false
         }
       ]
     ],

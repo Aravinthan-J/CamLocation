@@ -6,8 +6,6 @@ import {
   Alert,
   ActivityIndicator,
   Text,
-  Image,
-  Modal,
 } from "react-native";
 import { CameraView, CameraType, FlashMode } from "expo-camera";
 import { useRouter } from "expo-router";
@@ -20,12 +18,12 @@ import { captureAndSavePhoto } from "@/utils/photo-capture";
 import { LocationIndicator } from "@/components/camera/location-indicator";
 import { PermissionPrompt } from "@/components/camera/permission-prompt";
 import { CameraControls } from "@/components/camera/camera-controls";
-import { WatermarkOverlay } from "@/components/camera/watermark-overlay";
+import { PhotoPreviewModal } from "@/components/camera/photo-preview-modal";
 
 export default function CameraScreen() {
   const router = useRouter();
   const cameraRef = useRef<CameraView>(null);
-  const watermarkViewRef = useRef<View>(null);
+  const watermarkViewRef = useRef<View | null>(null);
 
   const [facing, setFacing] = useState<CameraType>("back");
   const [flashMode, setFlashMode] = useState<FlashMode>("off");
@@ -310,50 +308,15 @@ export default function CameraScreen() {
       )}
 
       {/* Photo Preview Modal */}
-      <Modal
+      <PhotoPreviewModal
         visible={capturedPhoto !== null}
-        transparent={true}
-        animationType="fade"
-        onRequestClose={handleRetake}
-      >
-        <View style={styles.previewContainer}>
-          {capturedPhoto && location && (
-            <View ref={watermarkViewRef} collapsable={false}>
-              <WatermarkOverlay imageUri={capturedPhoto} location={location} />
-            </View>
-          )}
-          {capturedPhoto && !location && (
-            <Image
-              source={{ uri: capturedPhoto }}
-              style={styles.previewImage}
-              resizeMode="contain"
-            />
-          )}
-
-          {/* Preview Actions */}
-          <View style={styles.previewActions}>
-            <TouchableOpacity
-              style={[styles.previewButton, styles.retakeButton]}
-              onPress={handleRetake}
-              disabled={isSaving}
-            >
-              <Text style={styles.previewButtonText}>Retake</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={[styles.previewButton, styles.saveButton]}
-              onPress={handleSavePhoto}
-              disabled={isSaving}
-            >
-              {isSaving ? (
-                <ActivityIndicator size="small" color="#fff" />
-              ) : (
-                <Text style={styles.previewButtonText}>Save Photo</Text>
-              )}
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
+        photoUri={capturedPhoto}
+        location={location}
+        isSaving={isSaving}
+        onSave={handleSavePhoto}
+        onRetake={handleRetake}
+        watermarkViewRef={watermarkViewRef}
+      />
     </View>
   );
 }
@@ -412,44 +375,6 @@ const styles = StyleSheet.create({
     gap: 16,
   },
   loadingText: {
-    color: "#fff",
-    fontSize: 16,
-    fontWeight: "600",
-  },
-  previewContainer: {
-    flex: 1,
-    backgroundColor: "#000",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  previewImage: {
-    width: "100%",
-    height: "100%",
-  },
-  previewActions: {
-    position: "absolute",
-    bottom: 40,
-    left: 20,
-    right: 20,
-    flexDirection: "row",
-    gap: 16,
-  },
-  previewButton: {
-    flex: 1,
-    height: 56,
-    borderRadius: 12,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  retakeButton: {
-    backgroundColor: "rgba(255, 255, 255, 0.2)",
-    borderWidth: 2,
-    borderColor: "#fff",
-  },
-  saveButton: {
-    backgroundColor: "#007AFF",
-  },
-  previewButtonText: {
     color: "#fff",
     fontSize: 16,
     fontWeight: "600",
